@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class MyButton extends StatelessWidget {
   String displayText;
+  GestureTapCallback buttonAction;
 
-  MyButton({required this.displayText});
+  MyButton({required this.displayText, required this.buttonAction});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: buttonAction,
       child: Padding(
         padding: const EdgeInsets.only(left: 35, right: 35),
         child: Container(

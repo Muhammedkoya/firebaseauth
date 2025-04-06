@@ -1,12 +1,41 @@
+import 'package:firebaseauth/database/auth_services.dart';
+import 'package:firebaseauth/screens/home_screen.dart';
 import 'package:firebaseauth/screens/login_screen.dart';
 import 'package:firebaseauth/widgets/footer_widget.dart';
 import 'package:firebaseauth/widgets/my_button.dart';
+import 'package:firebaseauth/widgets/show_snack_bar.dart';
 import 'package:firebaseauth/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
+  TextEditingController nameController = TextEditingController();
+
+  void SignUpUser() async {
+    String res = await AuthServices().SignUpUser(
+      name: nameController.text,
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    if (res == "Success") {
+      setState(() {});
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      setState(() {});
+      showSnackBar(context, res);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +57,7 @@ class SignUp extends StatelessWidget {
               TextFieldWidget(
                 iconImage: Icons.person,
                 hintText: "Enter your name",
-                textController: emailController,
+                textController: nameController,
               ),
               SizedBox(height: 20),
               TextFieldWidget(
@@ -41,10 +70,16 @@ class SignUp extends StatelessWidget {
                 iconImage: Icons.lock,
                 hintText: "Enter your password",
                 textController: passwordController,
+                ispass: true,
               ),
               SizedBox(height: 20),
 
-              MyButton(displayText: "Sign Up"),
+              MyButton(
+                displayText: "Sign Up",
+                buttonAction: () {
+                  SignUpUser();
+                },
+              ),
               SizedBox(height: 20),
               FooterWidget(
                 footerHeading1: "Already have an account? ",
